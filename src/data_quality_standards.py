@@ -43,7 +43,7 @@ def check_cccd_format(cur):
 def check_foreign_keys_transaction_account(cur):
     cur.execute("""
         SELECT t.transaction_id FROM transaction t
-        LEFT JOIN account a ON t.account_id = a.account_id
+        LEFT JOIN account a ON t.source_account_id = a.account_id
         WHERE a.account_id IS NULL
     """)
     orphans = cur.fetchall()
@@ -52,7 +52,7 @@ def check_foreign_keys_transaction_account(cur):
 def high_value_auth_check(cur):
     cur.execute("""
         SELECT t.transaction_id, t.amount, a.customer_id FROM transaction t
-        JOIN account a ON t.account_id = a.account_id
+        JOIN account a ON t.source_account_id = a.account_id
         WHERE t.amount > 10000000
     """)
     rows = cur.fetchall()
@@ -71,7 +71,7 @@ def daily_total_auth_check(cur):
     cur.execute("""
         SELECT a.customer_id, DATE(t.date), SUM(t.amount)
         FROM transaction t
-        JOIN account a ON t.account_id = a.account_id
+        JOIN account a ON t.source_account_id = a.account_id
         GROUP BY a.customer_id, DATE(t.date)
         HAVING SUM(t.amount) > 20000000
     """)
