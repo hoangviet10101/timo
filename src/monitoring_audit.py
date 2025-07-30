@@ -2,12 +2,19 @@
 
 import psycopg2
 import data_quality_standards as dq
+import os
+from dotenv import load_dotenv
 
-DB_NAME = "timo"
-DB_USER = "airflow"
-DB_PASSWORD = "airflow"
-DB_HOST = "localhost"
-DB_PORT = "5432"
+
+load_dotenv()
+
+# --- DB Config ---
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST_DOCKER")
+DB_PORT = os.getenv("PORT")
+
 
 def log_result(name, passed, detail):
     status = "✅ PASS" if passed else "❌ FAIL"

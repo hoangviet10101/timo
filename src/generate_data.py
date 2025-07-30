@@ -2,15 +2,21 @@ import random
 from datetime import datetime, timedelta
 from faker import Faker
 import psycopg2
+import os
+from dotenv import load_dotenv
+
 
 fake = Faker()
 
+
+load_dotenv()
+
 # --- DB Config ---
-DB_NAME = "timo"
-DB_USER = "airflow"
-DB_PASSWORD = "airflow"
-DB_HOST = "localhost"
-DB_PORT = "5432"
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST_DOCKER")
+DB_PORT = os.getenv("PORT")
 
 # --- Utilities ---
 def random_date(days_back=365):
@@ -122,8 +128,11 @@ def generate_auth_logs(customer_ids, device_ids, risk_ids):
 # --- Main Insert Logic ---
 def insert_data():
     conn = psycopg2.connect(
-        dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD,
-        host=DB_HOST, port=DB_PORT
+        dbname=DB_NAME, 
+        user=DB_USER, 
+        password=DB_PASSWORD,
+        host=DB_HOST, 
+        port=DB_PORT
     )
     cur = conn.cursor()
 

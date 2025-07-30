@@ -22,20 +22,34 @@ with DAG(
 ) as dag:
 
     def run_data_generation():
-        try:
-            result = subprocess.run(['python', '/opt/airflow/src/generate_data.py'], check=True)
-            logging.info("✅ Data generation completed successfully.")
-        except subprocess.CalledProcessError as e:
-            logging.error("❌ Data generation failed!")
-            raise e
+        logging.info("⏳ Running generate_data.py...")
+        result = subprocess.run(
+            ['python', '/opt/airflow/src/generate_data.py'],
+            capture_output=True,
+            text=True
+        )
+        if result.stdout:
+            logging.info(f"[generate_data.py STDOUT]\n{result.stdout}")
+        if result.stderr:
+            logging.error(f"[generate_data.py STDERR]\n{result.stderr}")
+        if result.returncode != 0:
+            raise Exception("❌ generate_data.py failed.")
+        logging.info("✅ generate_data.py completed successfully.")
 
     def run_quality_checks():
-        try:
-            result = subprocess.run(['python', '/opt/airflow/src/monitoring_audit.py'], check=True)
-            logging.info("✅ Data quality checks completed successfully.")
-        except subprocess.CalledProcessError as e:
-            logging.error("❌ Data quality checks failed!")
-            raise e
+        logging.info("⏳ Running monitoring_audit.py...")
+        result = subprocess.run(
+            ['python', '/opt/airflow/src/monitoring_audit.py'],
+            capture_output=True,
+            text=True
+        )
+        if result.stdout:
+            logging.info(f"[monitoring_audit.py STDOUT]\n{result.stdout}")
+        if result.stderr:
+            logging.error(f"[monitoring_audit.py STDERR]\n{result.stderr}")
+        if result.returncode != 0:
+            raise Exception("❌ monitoring_audit.py failed.")
+        logging.info("✅ monitoring_audit.py completed successfully.")
 
     generate_data_task = PythonOperator(
         task_id='generate_data',

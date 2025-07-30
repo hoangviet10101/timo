@@ -1,0 +1,53 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+venv/
+.env/
+*.env
+
+# VSCode settings
+.vscode/
+
+# Jupyter Notebook checkpoints (if any)
+.ipynb_checkpoints/
+
+# Logs
+*.log
+logs/
+*.out
+
+# Python test files
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+*.pytest_cache/
+
+# Airflow
+airflow.cfg
+unittest.cfg
+airflow.db
+*.pid
+logs/
+
+# SQLite files
+*.sqlite3
+*.db
+
+# Docker
+*.pid
+*.seed
+docker-compose.override.yml
+**/__pycache__/
+
+# Streamlit
+.streamlit/
+
+# System files
+.DS_Store
+Thumbs.db
