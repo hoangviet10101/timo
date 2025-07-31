@@ -7,7 +7,6 @@ def check_nulls(cur, table, column):
     cur.execute(f"SELECT COUNT(*) FROM {table} WHERE {column} IS NULL")
     result = cur.fetchone()
     count = result[0]
-    # return count == 0, f"{count} NULLs in {table}.{column}"
 
     if count == 0:
         return True, f"0 NULLs in {table}.{column}"
@@ -22,8 +21,6 @@ def check_uniqueness(cur, table, column):
         return True, f"{len(dups)} duplicates in {table}.{column}: {dups}"
     else:
         return False, f"{len(dups)} duplicates in {table}.{column}: {dups}"
-
-    # return len(dups) == 0, f"{len(dups)} duplicates in {table}.{column}: {dups}"
 
 def check_cccd_format(cur):
     cur.execute("SELECT customer_id, cccd FROM customer")

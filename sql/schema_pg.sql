@@ -1,9 +1,13 @@
-DROP TABLE IF EXISTS Auth_log CASCADE;
-DROP TABLE IF EXISTS Device CASCADE;
-DROP TABLE IF EXISTS Risk_tag CASCADE;
-DROP TABLE IF EXISTS Transaction CASCADE;
-DROP TABLE IF EXISTS Account CASCADE;
-DROP TABLE IF EXISTS Customer CASCADE;
+--This schema is written for Postgres
+
+
+-- Can use these commands to restart the the tables
+-- DROP TABLE IF EXISTS Auth_log CASCADE;
+-- DROP TABLE IF EXISTS Device CASCADE;
+-- DROP TABLE IF EXISTS Risk_tag CASCADE;
+-- DROP TABLE IF EXISTS Transaction CASCADE;
+-- DROP TABLE IF EXISTS Account CASCADE;
+-- DROP TABLE IF EXISTS Customer CASCADE;
 
 
 CREATE TABLE Customer (
