@@ -2,23 +2,23 @@
 
 
 -- Can use these commands to restart the the tables
--- DROP TABLE IF EXISTS Auth_log CASCADE;
--- DROP TABLE IF EXISTS Device CASCADE;
--- DROP TABLE IF EXISTS Risk_tag CASCADE;
--- DROP TABLE IF EXISTS Transaction CASCADE;
--- DROP TABLE IF EXISTS Account CASCADE;
--- DROP TABLE IF EXISTS Customer CASCADE;
+DROP TABLE IF EXISTS Auth_log CASCADE;
+DROP TABLE IF EXISTS Device CASCADE;
+DROP TABLE IF EXISTS Risk_tag CASCADE;
+DROP TABLE IF EXISTS Transaction CASCADE;
+DROP TABLE IF EXISTS Account CASCADE;
+DROP TABLE IF EXISTS Customer CASCADE;
 
 
 CREATE TABLE Customer (
     customer_id SERIAL PRIMARY KEY,
-    first_name VARCHAR(50),
+    first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50),
-    cccd VARCHAR(50) UNIQUE,
-    date_of_birth VARCHAR(50),
-    email VARCHAR(100) UNIQUE,
+    cccd VARCHAR(50) ,
+    date_of_birth DATE,
+    email VARCHAR(50) ,
     phone_number VARCHAR(50),
-    address VARCHAR(255),
+    address TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -26,24 +26,38 @@ CREATE TABLE Customer (
 CREATE TABLE Account (
     account_id SERIAL PRIMARY KEY,
     customer_id INT,
-    account_number VARCHAR(20) UNIQUE,
-    account_type VARCHAR(20) CHECK (account_type IN ('SAVINGS', 'CHECKING', 'BUSINESS')),
+    account_number VARCHAR(50) UNIQUE,
+    account_type VARCHAR(50),
     balance DECIMAL(18, 2) DEFAULT 0.00,
+    status VARCHAR(50) DEFAULT 'ACTIVE',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(20) CHECK (status IN ('ACTIVE', 'FROZEN', 'CLOSED')) DEFAULT 'ACTIVE',
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+);
+
+
+CREATE TABLE Device (
+    device_id SERIAL PRIMARY KEY,
+    customer_id INT,
+    device_type VARCHAR(50),
+    is_verified BOOLEAN,
+    last_activity TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
 );
 
 
 CREATE TABLE Transaction (
     transaction_id SERIAL PRIMARY KEY,
-    source_account_id INT,
-    destination_account_id INT,
-    transaction_type VARCHAR(20) CHECK (transaction_type IN ('TRANSFER', 'DEPOSIT', 'WITHDRAWAL', 'PAYMENT')),
-    amount DECIMAL(18, 2),
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (source_account_id) REFERENCES Account(account_id),
-    FOREIGN KEY (destination_account_id) REFERENCES Account(account_id)
+    src_account_id INT,
+    dest_account_id INT,
+    transaction_type VARCHAR(50),
+    amount FLOAT,
+    auth_method VARCHAR(50), 
+    device_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (src_account_id) REFERENCES Account(account_id),
+    FOREIGN KEY (dest_account_id) REFERENCES Account(account_id),
+    FOREIGN KEY (device_id) REFERENCES Device(device_id)
 );
 
 
@@ -51,21 +65,11 @@ CREATE TABLE Risk_tag (
     risk_id SERIAL PRIMARY KEY,
     transaction_id INT,
     risk_type VARCHAR(50),
-    severity VARCHAR(20) CHECK (severity IN ('LOW', 'MEDIUM', 'HIGH', 'CRITICAL')),
+    severity VARCHAR(50),
     description TEXT,
+    status VARCHAR(50) DEFAULT 'UNRESOLVED',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(20) CHECK (status IN ('UNRESOLVED', 'RESOLVED', 'IGNORED')) DEFAULT 'UNRESOLVED',
     FOREIGN KEY (transaction_id) REFERENCES Transaction(transaction_id)
-);
-
-
-CREATE TABLE Device (
-    device_id SERIAL PRIMARY KEY,
-    customer_id INT,
-    type VARCHAR(50) CHECK (type IN ('MOBILE', 'TABLET', 'DESKTOP', 'UNKNOWN')),
-    last_activity TIMESTAMP,
-    ip_address VARCHAR(45),
-    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
 );
 
 
@@ -73,10 +77,10 @@ CREATE TABLE Auth_log (
     log_id SERIAL PRIMARY KEY,
     customer_id INT,
     device_id INT,
-    method VARCHAR(20) CHECK (method IN ('OTP', 'BIOMETRIC', 'PASSWORD')),
+    method VARCHAR(50),
     success BOOLEAN,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     risk_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
     FOREIGN KEY (device_id) REFERENCES Device(device_id),
     FOREIGN KEY (risk_id) REFERENCES Risk_tag(risk_id)
