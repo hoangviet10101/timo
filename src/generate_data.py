@@ -130,13 +130,13 @@ def generate_edge_case_customers():
 
         # 1. NULL fields (represented as empty strings where not nullable)
         (
-            'edge case',                                 # first_name 
-            None,                                 # last_name
-            fake.unique.numerify('############'),   # valid CCCD
-            None,                                   # date_of_birth (NULL)
-            None,                                     # email
-            None,                                     # phone_number
-            None,                                     # address
+            'edge case',                                # first_name 
+            None,                                       # last_name
+            fake.unique.numerify('############'),       # valid CCCD
+            None,                                       # date_of_birth (NULL)
+            None,                                       # email
+            None,                                       # phone_number
+            None,                                       # address
             datetime.now()
         ),
 
@@ -229,19 +229,6 @@ def insert_data():
         """, customer)
         customer_ids.append(cur.fetchone()[0])
 
-    
-    # --- Insert Devices ---
-    # devices = generate_devices(customer_ids)
-
-    # Separate list to track verification status for each device
-
-
-    # cur.executemany("""
-    #     INSERT INTO Device (customer_id, device_type, is_verified, last_activity, created_at)
-    #     VALUES (%s, %s, %s, %s, %s)
-    #     RETURNING device_id
-    # """, devices)
-    # device_ids = [row[0] for row in cur.fetchall()]
 
     devices = generate_devices(customer_ids)
     device_ids = []

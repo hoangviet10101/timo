@@ -20,9 +20,17 @@ st.title("📊 Banking Data Quality Dashboard")
 # Risky transactions
 st.header("⚠️ Risky Transactions")
 risky_query = """
-    SELECT transaction_id, amount, transaction_type, src_account_id
-    FROM transaction
-    WHERE amount > 10000000
+    SELECT 
+        t.transaction_id,
+        a.customer_id,
+        t.amount,
+        t.auth_method,
+        t.created_at
+    FROM transaction t
+    JOIN account a ON t.src_account_id = a.account_id
+    WHERE t.amount > 10000000
+    AND t.auth_method NOT IN ('OTP', 'BIOMETRIC')
+    ORDER BY t.amount DESC;
 """
 df_risky = pd.read_sql(risky_query, conn)
 st.dataframe(df_risky)
