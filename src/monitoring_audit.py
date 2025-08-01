@@ -40,10 +40,11 @@ def main():
     cur = conn.cursor()
 
     checks = [
-        ("Null check: Customer.cccd", dq.check_nulls, (cur, "Customer", "cccd")),
+        ("Null check: Customer.email", dq.check_nulls, (cur, "Customer", "email")),
         ("Null check: Account.account_number", dq.check_nulls, (cur, "Account", "account_number")),
         ("Null check: Transaction.amount", dq.check_nulls, (cur, "Transaction", "amount")),
         ("Uniqueness check: Account.account_number", dq.check_uniqueness, (cur, "Account", "account_number")),
+        ("Uniqueness check: Customer.cccd", dq.check_uniqueness, (cur, "Customer", "cccd")),
         ("Format check: Customer.cccd (12 digits)", dq.check_cccd_format, (cur,)),
         ("Foreign Key Check: Transaction.src_account_id → Account.account_id", dq.check_foreign_keys_transaction_account, (cur,)),
         ("High-value transaction requires strong auth", dq.high_value_auth_check, (cur,)),

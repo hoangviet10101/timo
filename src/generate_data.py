@@ -130,13 +130,13 @@ def generate_edge_case_customers():
 
         # 1. NULL fields (represented as empty strings where not nullable)
         (
-            'Edge',                                 # first_name 
-            'Case',                                 # last_name
+            'edge case',                                 # first_name 
+            None,                                 # last_name
             fake.unique.numerify('############'),   # valid CCCD
             None,                                   # date_of_birth (NULL)
-            '',                                     # email
-            '',                                     # phone_number
-            '',                                     # address
+            None,                                     # email
+            None,                                     # phone_number
+            None,                                     # address
             datetime.now()
         ),
 
