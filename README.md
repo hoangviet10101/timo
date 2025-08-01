@@ -4,31 +4,18 @@
 
 # Project Structure
 
-banking-data-monitoring/
-├── dags/                       # Airflow DAGs
-│   └── banking_dq_dag.py
-│
-├── src/                        # Core Python logic
-│   ├── monitoring_audit.py     # Main DQ check script
-│   ├── data_quality_checks.py  # All individual check functions
-│   └── utils.py                # (optional) helper functions
-│
-├── dashboard/                  # Streamlit dashboard
-│   ├── dashboard.py            # Main Streamlit app
-│   └── components.py           # Optional reusable UI components
-│
-├── sql/                        # Reusable SQL queries (optional)
-│   └── init_schema.sql         # Table schema
-│
-├── tests/                      # Unit tests (optional)
-│   └── test_data_quality.py
-│
-├── .env.example                # Example env vars (DON’T commit your real `.env`)
-├── .gitignore
-├── requirements.txt            # All Python dependencies
-├── README.md                   # Project description
-├── LICENSE                     # (optional) open source license
-└── setup.sh                    # (optional) helper script to set up local env
+dags/
+• banking_dq_dag.py – schedules and triggers data quality checks.
+
+sql/
+• schema_pg.sql – PostgreSQL table definitions.
+
+src/
+• monitoring_audit.py – runs all checks and logs results.
+• data_quality_checks.py – individual check logic (nulls, format, foreign keys, etc).
+
+visualization/
+• dashboard.py – main dashboard app.
 
 
 # Setup Instructions
