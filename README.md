@@ -4,20 +4,32 @@
 
 # Project Structure
 
-├── dags/                           # Airflow DAGs
-│ └── banking_dq_dag.py             # Main DAG for data generation and audit
-├── src/    
-│ ├── generate_data.py              # Script to generate synthetic data using Faker
-│ ├── data_quality_standards.py     # Contains DQ check functions
-│ └── monitoring_audit.py           # Executes DQ checks and logs output
-├── visualization/  
-│ └── dashboard.py                  # Streamlit dashboard for DQ results
-├── sql/    
-│ └── schema_pg.sql                 # SQL schema for PostgreSQL
-├── .env                            # Environment variables
-├── requirements.txt                # Python dependencies
-├── docker-compose.yml              # Multi-container Docker setup
-└── README.md                       # Project documentation
+banking-data-monitoring/
+├── dags/                       # Airflow DAGs
+│   └── banking_dq_dag.py
+│
+├── src/                        # Core Python logic
+│   ├── monitoring_audit.py     # Main DQ check script
+│   ├── data_quality_checks.py  # All individual check functions
+│   └── utils.py                # (optional) helper functions
+│
+├── dashboard/                  # Streamlit dashboard
+│   ├── dashboard.py            # Main Streamlit app
+│   └── components.py           # Optional reusable UI components
+│
+├── sql/                        # Reusable SQL queries (optional)
+│   └── init_schema.sql         # Table schema
+│
+├── tests/                      # Unit tests (optional)
+│   └── test_data_quality.py
+│
+├── .env.example                # Example env vars (DON’T commit your real `.env`)
+├── .gitignore
+├── requirements.txt            # All Python dependencies
+├── README.md                   # Project description
+├── LICENSE                     # (optional) open source license
+└── setup.sh                    # (optional) helper script to set up local env
+
 
 # Setup Instructions
 ## Requirements
